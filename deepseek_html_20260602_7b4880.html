@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus augmentés – Formations de base Handi-3D | Gnut06</title>
+    <style>
+        :root {
+            --bg: #f5f0eb;
+            --surface: #ffffff;
+            --primary: #2e5c4e;
+            --primary-light: #e6f0ed;
+            --accent: #c97e3a;
+            --accent-light: #fdf0e3;
+            --text: #1e2b26;
+            --text-soft: #4a5b55;
+            --border: #d4cec6;
+            --shadow: 0 4px 16px rgba(0,0,0,0.06);
+            --radius: 18px;
+            --radius-sm: 10px;
+            --transition: 0.25s ease;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Accessibility: skip link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            z-index: 1000;
+            transition: top 0.3s;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        header h1 {
+            font-size: 2.1rem;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.3rem;
+        }
+        header .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .logo-area img {
+            height: 48px;
+            border-radius: 8px;
+        }
+
+        /* Navigation pills */
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .nav-pill {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            font-size: 0.95rem;
+            color: var(--text-soft);
+        }
+        .nav-pill:hover,
+        .nav-pill:focus-visible {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            outline: none;
+        }
+        .nav-pill.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 6px 14px rgba(46,92,78,0.25);
+        }
+
+        /* Modules */
+        .module {
+            display: none;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem 1.8rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            animation: fadeSlide 0.35s ease;
+        }
+        .module.active {
+            display: block;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .module-icon {
+            font-size: 2.8rem;
+            background: var(--primary-light);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .module-title {
+            font-size: 1.7rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Accordion within modules */
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.2rem;
+            background: #fdfdfb;
+            overflow: hidden;
+        }
+        .accordion-summary {
+            padding: 1rem 1.3rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f7f4;
+            transition: background var(--transition);
+            list-style: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            color: var(--text);
+        }
+        .accordion-summary::-webkit-details-marker {
+            display: none;
+        }
+        .accordion-summary:hover,
+        .accordion-summary:focus-visible {
+            background: var(--primary-light);
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+        }
+        .accordion-icon {
+            font-size: 1.6rem;
+            transition: transform var(--transition);
+            color: var(--primary);
+        }
+        details[open] .accordion-icon {
+            transform: rotate(45deg);
+        }
+        .accordion-content {
+            padding: 1rem 1.3rem 1.4rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Material grid */
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .material-card {
+            background: var(--accent-light);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+        }
+        .material-card:hover,
+        .material-card:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+            outline: none;
+        }
+        .material-emoji {
+            font-size: 2.4rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+        .material-name {
+            font-weight: 700;
+            color: #6b4226;
+        }
+        .material-detail {
+            font-size: 0.85rem;
+            color: #5e4a38;
+        }
+        .tooltip-popup {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: #fff;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .material-card:hover .tooltip-popup,
+        .material-card:focus-visible .tooltip-popup {
+            display: block;
+        }
+
+        /* Interactive game area */
+        .game-box {
+            background: #fefaf3;
+            border: 2px dashed var(--accent);
+            border-radius: var(--radius-sm);
+            padding: 1.4rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .game-box h4 {
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .quiz-btn {
+            background: #fff;
+            border: 2px solid var(--border);
+            padding: 0.7rem 1.3rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .quiz-btn:hover,
+        .quiz-btn:focus-visible {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            outline: none;
+        }
+        .quiz-btn.correct {
+            background: #c8e6c9;
+            border-color: #2e7d32;
+            color: #1b5e20;
+        }
+        .quiz-btn.wrong {
+            background: #ffcdd2;
+            border-color: #c62828;
+            color: #b71c1c;
+        }
+        .feedback-msg {
+            font-weight: 600;
+            margin-top: 0.7rem;
+            min-height: 1.5rem;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.7rem 0;
+        }
+        .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 20px;
+            padding: 0.35rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 0.8rem; }
+            .nav-pill { font-size: 0.8rem; padding: 0.5rem 0.9rem; }
+            .module { padding: 1.2rem; }
+            .module-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+    <header>
+        <div class="logo-area">
+            <span style="font-size:3rem;">🌐</span>
+            <div>
+                <h1>Handi-3D · Syllabus augmentés</h1>
+                <p class="subtitle">Formations de base pour les premiers utilisateurs TIH</p>
+            </div>
+        </div>
+        <p style="position:relative;z-index:1;">Association <strong>Gnut06</strong> – Métavers libre et accessible</p>
+    </header>
+
+    <nav class="nav-pills" aria-label="Modules de formation">
+        <button class="nav-pill active" data-module="0">🧭 Prise en main</button>
+        <button class="nav-pill" data-module="1">🚶 Navigation</button>
+        <button class="nav-pill" data-module="2">💬 Communication</button>
+        <button class="nav-pill" data-module="3">👤 Avatar & accessibilité</button>
+        <button class="nav-pill" data-module="4">🔒 Sécurité</button>
+        <button class="nav-pill" data-module="5">🤝 Communauté</button>
+    </nav>
+
+    <main id="main-content">
+        <!-- Module 0 -->
+        <article class="module active" data-module="0">
+            <div class="module-header">
+                <div class="module-icon">🧭</div>
+                <h2 class="module-title">1. Prise en main du matériel et de l’environnement</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs & modalités <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Découvrir le casque/PC, adapter les réglages de confort et lancer Handi-3D en toute autonomie.</p>
+                    <p><strong>Durée :</strong> 2 × 1h30 (présentiel ou distanciel synchrone avec tuteur dédié).</p>
+                    <p><strong>Prérequis :</strong> Aucun. Accompagnement humain possible selon les besoins.</p>
+                    <div class="badge-list">
+                        <span class="badge">♿ Accessible fauteuil</span>
+                        <span class="badge">🦻 Boucle magnétique</span>
+                        <span class="badge">👁️ Description audio</span>
+                    </div>
+                </div>
+            </details>
+            <details class="accordion">
+                <summary class="accordion-summary">📦 Matériel pédagogique spécifique <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <div class="material-grid">
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">🥽</span>
+                            <span class="material-name">Casque VR autonome</span>
+                            <span class="material-detail">Meta Quest 3 / Pico 4</span>
+                            <span class="tooltip-popup">Réglages IPD, sangles adaptées</span>
+                        </div>
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">🖥️</span>
+                            <span class="material-name">Station PC</span>
+                            <span class="material-detail">Écran 24" réglable</span>
+                            <span class="tooltip-popup">Version desktop pour fatigabilité visuelle</span>
+                        </div>
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">🎮</span>
+                            <span class="material-name">Contrôleurs adaptés</span>
+                            <span class="material-detail">Joystick, contacteurs</span>
+                            <span class="tooltip-popup">Switch access, manette oculaire</span>
+                        </div>
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">🪑</span>
+                            <span class="material-name">Siège pivotant</span>
+                            <span class="material-detail">Accoudoirs réglables</span>
+                            <span class="tooltip-popup">Pour usage assis prolongé</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>🎮 Mini-jeu : Trouvez la bonne action</h4>
+                <p>Que faut-il vérifier en premier quand on met un casque VR ?</p>
+                <div class="quiz-options" data-correct="Réglage de l’écartement pupillaire (IPD)">
+                    <button class="quiz-btn">Lancer une application</button>
+                    <button class="quiz-btn">Réglage de l’écartement pupillaire (IPD)</button>
+                    <button class="quiz-btn">Connecter le WiFi</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+
+        <!-- Module 1 -->
+        <article class="module" data-module="1">
+            <div class="module-header">
+                <div class="module-icon">🚶</div>
+                <h2 class="module-title">2. Navigation et interaction dans le monde virtuel</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs & modalités <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Se déplacer (téléportation, vol, marche) et manipuler les objets de l’environnement Handi-3D.</p>
+                    <p><strong>Durée :</strong> 2h en atelier pratique + 1h de mise en situation libre.</p>
+                    <div class="badge-list">
+                        <span class="badge">🖱️ Contrôle au regard</span>
+                        <span class="badge">⌨️ Raccourcis clavier</span>
+                    </div>
+                </div>
+            </details>
+            <details class="accordion">
+                <summary class="accordion-summary">📦 Matériel spécifique <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <div class="material-grid">
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">🕹️</span><span class="material-name">Joystick adaptatif</span>
+                            <span class="tooltip-popup">Xbox Adaptive Controller</span>
+                        </div>
+                        <div class="material-card" tabindex="0">
+                            <span class="material-emoji">👀</span><span class="material-name">Eye tracker</span>
+                            <span class="tooltip-popup">Tobii pour navigation au regard</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>🧩 Quiz : Mode de déplacement accessible</h4>
+                <p>Quel mode évite le motion sickness chez beaucoup d’utilisateurs ?</p>
+                <div class="quiz-options" data-correct="La téléportation">
+                    <button class="quiz-btn">La marche virtuelle fluide</button>
+                    <button class="quiz-btn">La téléportation</button>
+                    <button class="quiz-btn">Le vol libre</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+
+        <!-- Module 2 -->
+        <article class="module" data-module="2">
+            <div class="module-header">
+                <div class="module-icon">💬</div>
+                <h2 class="module-title">3. Communication et collaboration</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Utiliser le chat textuel/vocal, le speech-to-text, le text-to-speech et les gestes en LSF.</p>
+                    <p><strong>Durée :</strong> 1h30 en binôme.</p>
+                </div>
+            </details>
+            <details class="accordion">
+                <summary class="accordion-summary">📦 Matériel <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <div class="material-grid">
+                        <div class="material-card" tabindex="0"><span class="material-emoji">🎙️</span><span class="material-name">Micro-casque</span></div>
+                        <div class="material-card" tabindex="0"><span class="material-emoji">⌨️</span><span class="material-name">Clavier braille</span></div>
+                    </div>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>🎤 Défi : Associez l’outil au besoin</h4>
+                <p>Une personne sourde signante utilise surtout :</p>
+                <div class="quiz-options" data-correct="Les avatars avec gestes LSF et le chat textuel">
+                    <button class="quiz-btn">Le micro vocal uniquement</button>
+                    <button class="quiz-btn">Les avatars avec gestes LSF et le chat textuel</button>
+                    <button class="quiz-btn">Uniquement des sons</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+
+        <!-- Module 3 -->
+        <article class="module" data-module="3">
+            <div class="module-header">
+                <div class="module-icon">👤</div>
+                <h2 class="module-title">4. Personnalisation de l’avatar et de l’accessibilité</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Créer un avatar représentatif (fauteuil, canne), activer les aides techniques internes.</p>
+                </div>
+            </details>
+            <details class="accordion">
+                <summary class="accordion-summary">📦 Matériel <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <div class="material-grid">
+                        <div class="material-card" tabindex="0"><span class="material-emoji">🦽</span><span class="material-name">Avatar fauteuil</span></div>
+                        <div class="material-card" tabindex="0"><span class="material-emoji">🦮</span><span class="material-name">Chien guide virtuel</span></div>
+                    </div>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>✨ Vrai ou Faux ?</h4>
+                <p>On peut sauvegarder ses préférences d’accessibilité pour les retrouver à chaque connexion.</p>
+                <div class="quiz-options" data-correct="Vrai">
+                    <button class="quiz-btn">Vrai</button>
+                    <button class="quiz-btn">Faux</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+
+        <!-- Module 4 -->
+        <article class="module" data-module="4">
+            <div class="module-header">
+                <div class="module-icon">🔒</div>
+                <h2 class="module-title">5. Sécurité, vie privée et bien-être numérique</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Gérer son espace personnel, bloquer un intrus, signaler un abus et prévenir la fatigue.</p>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>🛡️ Scénario : Que faites-vous ?</h4>
+                <p>Un avatar inconnu vous suit de manière insistante :</p>
+                <div class="quiz-options" data-correct="Activer la bulle de confort et bloquer la personne">
+                    <button class="quiz-btn">Quitter le métavers définitivement</button>
+                    <button class="quiz-btn">Activer la bulle de confort et bloquer la personne</button>
+                    <button class="quiz-btn">Ne rien dire</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+
+        <!-- Module 5 -->
+        <article class="module" data-module="5">
+            <div class="module-header">
+                <div class="module-icon">🤝</div>
+                <h2 class="module-title">6. Connaissance de la communauté et des ressources</h2>
+            </div>
+            <details class="accordion" open>
+                <summary class="accordion-summary">🎯 Objectifs <span class="accordion-icon">＋</span></summary>
+                <div class="accordion-content">
+                    <p><strong>Objectif :</strong> Trouver de l’aide, participer aux ateliers de co-conception, découvrir les espaces dédiés.</p>
+                    <p><strong>Ressources :</strong> Forum Gnut06, salons d’entraide, permanences bénévoles.</p>
+                </div>
+            </details>
+            <div class="game-box">
+                <h4>🧭 Exploration : Où trouver de l’aide ?</h4>
+                <p>Quel canal privilégier pour une question rapide ?</p>
+                <div class="quiz-options" data-correct="Le salon d’entraide dans le métavers">
+                    <button class="quiz-btn">Un email au support</button>
+                    <button class="quiz-btn">Le salon d’entraide dans le métavers</button>
+                    <button class="quiz-btn">Attendre la prochaine mise à jour</button>
+                </div>
+                <p class="feedback-msg" aria-live="polite"></p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>🌿 <strong>Gnut06</strong> – Métavers Handi-3D · Syllabus sous licence CC BY-SA 4.0</p>
+        <p><a href="https://gnut06.org/" target="_blank" rel="noopener">gnut06.org</a> · Contact : accessibilite@gnut06.org</p>
+    </footer>
+
+    <script>
+        (function() {
+            // Module navigation
+            const pills = document.querySelectorAll('.nav-pill');
+            const modules = document.querySelectorAll('.module');
+
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const moduleId = pill.getAttribute('data-module');
+                    // Update pills
+                    pills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    // Show module
+                    modules.forEach(m => {
+                        m.classList.remove('active');
+                        if (m.getAttribute('data-module') === moduleId) {
+                            m.classList.add('active');
+                        }
+                    });
+                    // Scroll to top of modules
+                    document.getElementById('main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Quiz logic
+            const quizContainers = document.querySelectorAll('.quiz-options');
+            quizContainers.forEach(container => {
+                const correctAnswer = container.getAttribute('data-correct');
+                const buttons = container.querySelectorAll('.quiz-btn');
+                const feedbackEl = container.parentElement.querySelector('.feedback-msg');
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Reset all buttons in this container
+                        buttons.forEach(b => {
+                            b.classList.remove('correct', 'wrong');
+                            b.disabled = true;
+                        });
+                        if (btn.textContent.trim() === correctAnswer.trim()) {
+                            btn.classList.add('correct');
+                            if (feedbackEl) {
+                                feedbackEl.textContent = '✅ Bonne réponse ! Continuez ainsi.';
+                                feedbackEl.style.color = '#2e7d32';
+                            }
+                        } else {
+                            btn.classList.add('wrong');
+                            // Highlight correct one
+                            buttons.forEach(b => {
+                                if (b.textContent.trim() === correctAnswer.trim()) {
+                                    b.classList.add('correct');
+                                }
+                            });
+                            if (feedbackEl) {
+                                feedbackEl.textContent = '❌ Pas tout à fait. La réponse correcte est en vert.';
+                                feedbackEl.style.color = '#c62828';
+                            }
+                        }
+                    });
+                });
+            });
+
+            // Accordion icons already handled via CSS details[open]
+        })();
+    </script>
+</body>
+</html>
